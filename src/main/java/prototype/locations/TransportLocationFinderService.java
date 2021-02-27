@@ -53,7 +53,7 @@ public class TransportLocationFinderService {
                 && distanceToBusStop < distanceToSubwayStation
                 && distanceToBusStop < distanceToTrainStation
                 && cityDataService.getPublicTransportLoad() < 0.85
-                && cityDataService.getTrafficLoad() > 0.8)
+                && cityDataService.getTrafficLoad() < 0.8)
         {
             return nearestCarParking;
         }

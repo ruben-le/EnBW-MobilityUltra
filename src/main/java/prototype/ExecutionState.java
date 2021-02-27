@@ -12,13 +12,17 @@ public class ExecutionState {
     private final Plane plane;
     private final Scanner scanner = new Scanner(System.in);
     private TransportLocationFinderService transportLocationFinderService;
+    private final TransportEnvironmentService transportEnvironmentService;
+    private final TransportSpeedService transportSpeedService;
     public final SampleLocationDataGeneratorService sampleLocationDataGeneratorService;
     private final CityDataService cityDataService;
 
     public ExecutionState(boolean finished) {
         this.sampleLocationDataGeneratorService = new SampleLocationDataGeneratorService();
-        this.finished = finished;
         this.cityDataService = new CityDataService();
+        this.transportEnvironmentService = new TransportEnvironmentService();
+        this.transportSpeedService = new TransportSpeedService(cityDataService);
+        this.finished = finished;
 
         this.plane = new Plane(
                 1000,
@@ -44,9 +48,9 @@ public class ExecutionState {
      * Gets the position data of the user
      */
     public void getPositionData() {
-        System.out.println("Input your x position (Max " + plane.getXMax() + "):");
+        System.out.println("Geben sie die x-koordinate Ihrer Position ein: (Max " + plane.getXMax() + "):");
         xPos = scanner.nextInt();
-        System.out.println("Input your y position (Max " + plane.getYMax() + "):");
+        System.out.println("Geben sie die y-koordinate Ihrer Position ein: (Max " + plane.getYMax() + "):");
         yPos = scanner.nextInt();
         System.out.println("Your position is: " + xPos + "/" + yPos + " (x/y), press enter to continue.");
         this.transportLocationFinderService = new TransportLocationFinderService(this.plane, this);
@@ -64,26 +68,27 @@ public class ExecutionState {
      */
     public void printLocations() {
         plane.getBusStops().forEach(System.out::println);
-        plane.getBusStops().forEach(stop -> System.out.println("Distance: " + transportLocationFinderService.getDistance(stop.getxPos(), stop.getyPos())));
+        plane.getBusStops().forEach(stop -> System.out.println("Distanz: " + transportLocationFinderService.getDistance(stop.getxPos(), stop.getyPos())));
         System.out.println();
         plane.getCarParking().forEach(System.out::println);
-        plane.getCarParking().forEach(parking -> System.out.println("Distance: " + transportLocationFinderService.getDistance(parking.getxPos(), parking.getyPos())));
+        plane.getCarParking().forEach(parking -> System.out.println("Distanz: " + transportLocationFinderService.getDistance(parking.getxPos(), parking.getyPos())));
         System.out.println();
         plane.getRentableBikes().forEach(System.out::println);
-        plane.getRentableBikes().forEach(bike -> System.out.println("Distance: " + transportLocationFinderService.getDistance(bike.getxPos(), bike.getyPos())));
+        plane.getRentableBikes().forEach(bike -> System.out.println("Distanz: " + transportLocationFinderService.getDistance(bike.getxPos(), bike.getyPos())));
         System.out.println();
         plane.getSubwayStations().forEach(System.out::println);
-        plane.getSubwayStations().forEach(subwayStation -> System.out.println("Distance: " + transportLocationFinderService.getDistance(subwayStation.getxPos(), subwayStation.getyPos())));
+        plane.getSubwayStations().forEach(subwayStation -> System.out.println("Distanz: " + transportLocationFinderService.getDistance(subwayStation.getxPos(), subwayStation.getyPos())));
         System.out.println();
         plane.getTrainStations().forEach(System.out::println);
-        plane.getTrainStations().forEach(trainStation -> System.out.println("Distance: " + transportLocationFinderService.getDistance(trainStation.getxPos(), trainStation.getyPos())));
+        plane.getTrainStations().forEach(trainStation -> System.out.println("Distanz: " + transportLocationFinderService.getDistance(trainStation.getxPos(), trainStation.getyPos())));
         System.out.println();
     }
 
     public void printCityData() {
-        System.out.println("Current Air Condition Index: " + cityDataService.getAirCondition());
-        System.out.println("Current Public Transport Load: " + cityDataService.getPublicTransportLoad());
-        System.out.println("Current Traffic Load: " + cityDataService.getTrafficLoad());
+        System.out.println("Aktuelle Luftqualität: " + (int)(cityDataService.getAirCondition() * 100) + "%");
+        System.out.println("Aktuelle Auslastung öffentlicher Verkehrsmittel: " + (int) (cityDataService.getPublicTransportLoad() * 100) + "%");
+        System.out.println("Aktuelle Verkehrsauslastung: " + (int) (cityDataService.getTrafficLoad() * 100) + "%");
+        System.out.println();
     }
 
     /**
@@ -92,8 +97,11 @@ public class ExecutionState {
     public void printNearestLocation() {
         TransportLocation nearestLocation = transportLocationFinderService.getNearestLocation();
         double distance = transportLocationFinderService.getDistance(nearestLocation.getxPos(), nearestLocation.getyPos());
-        System.out.println("Nearest Transportation Point at: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + distance + " away from you.");
-        System.out.println("Type: " + nearestLocation.getType());
+        System.out.println("Nächstgelegene Transportmöglichkeit: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + distance + " away from you.");
+        System.out.println("Typ: " + nearestLocation.getType());
+        System.out.println("Umweltbelastung: " + transportEnvironmentService.getEnvironmentalStatus(nearestLocation));
+        System.out.println("Geschwindigkeit: " + transportSpeedService.getTransportationSpeed(nearestLocation));
+        System.out.println();
     }
 
     public int getxPos() {
