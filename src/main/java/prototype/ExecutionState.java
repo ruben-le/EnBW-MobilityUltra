@@ -1,9 +1,6 @@
 package prototype;
 
-import prototype.locations.Location;
-import prototype.locations.NearestLocationFinder;
-import prototype.locations.Parking;
-import prototype.locations.Stop;
+import prototype.locations.*;
 
 import java.util.*;
 
@@ -13,17 +10,22 @@ public class ExecutionState {
     private int xPos;
     private int yPos;
     private final Plane plane;
-    private final List<Stop> stops = new ArrayList<>();
-    private final List<Parking> parking = new ArrayList<>();
-    private final Random r = new Random();
     private final Scanner scanner = new Scanner(System.in);
-    private final NearestLocationFinder nearestLocationFinder;
+    private final TransportLocationFinderService transportLocationFinderService;
+    public final SampleLocationDataGeneratorService sampleLocationDataGeneratorService;
 
     public ExecutionState(boolean finished) {
+        this.sampleLocationDataGeneratorService = new SampleLocationDataGeneratorService();
         this.finished = finished;
-        generateSampleLocationData();
-        this.plane = new Plane(1000, 1000, stops, parking);
-        this.nearestLocationFinder = new NearestLocationFinder(plane, this);
+        this.plane = new Plane(
+                1000,
+                1000,
+                sampleLocationDataGeneratorService.generateSampleBusStops(),
+                sampleLocationDataGeneratorService.generateSampleCarParking(),
+                sampleLocationDataGeneratorService.generateSampleRentableBikes(),
+                sampleLocationDataGeneratorService.generateSampleSubwayStations()
+        );
+        this.transportLocationFinderService = new TransportLocationFinderService(plane, this);
     }
 
 
@@ -48,26 +50,18 @@ public class ExecutionState {
     }
 
     public void printLocations() {
-        stops.forEach(System.out::println);
-        parking.forEach(System.out::println);
-    }
-
-    public void generateSampleLocationData() {
-
-        for (int i = 0; i < 10; i++) {
-            int x = r.nextInt(1000);
-            int y = r.nextInt(1000);
-            stops.add(new Stop(x, y));
-        }
-        for (int i = 0; i < 10; i++) {
-            int x = r.nextInt(1000);
-            int y = r.nextInt(1000);
-            parking.add(new Parking(x, y));
-        }
+        plane.getBusStops().forEach(System.out::println);
+        System.out.println();
+        plane.getCarParking().forEach(System.out::println);
+        System.out.println();
+        plane.getRentableBikes().forEach(System.out::println);
+        System.out.println();
+        plane.getSubwayStations().forEach(System.out::println);
+        System.out.println();
     }
 
     public void printNearestLocation() {
-        Location nearestLocation = nearestLocationFinder.getNearestLocation();
+        TransportLocation nearestLocation = transportLocationFinderService.getNearestLocation();
         System.out.println("Nearest Transportation Point at: " + Arrays.toString(nearestLocation.getCoordinates()));
         System.out.println("Type: " + nearestLocation.getType());
     }

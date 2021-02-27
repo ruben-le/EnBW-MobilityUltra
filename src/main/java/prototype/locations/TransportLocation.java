@@ -2,12 +2,12 @@ package prototype.locations;
 
 import java.util.Arrays;
 
-public class Location {
+public class TransportLocation {
 
     private final int[] coordinates = new int[2];
     private final String locationType;
 
-    public Location(int x, int y, String locationType) {
+    public TransportLocation(int x, int y, String locationType) {
         this.coordinates[0] = x;
         this.coordinates[1] = y;
         this.locationType = locationType;
