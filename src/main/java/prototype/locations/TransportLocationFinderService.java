@@ -30,17 +30,29 @@ public class TransportLocationFinderService {
         double distanceToSubwayStation = getDistance(nearestSubwayStation.getxPos(), nearestSubwayStation.getyPos());
         double distanceToTrainStation = getDistance(nearestTrainStation.getxPos(), nearestTrainStation.getyPos());
 
+        // Rentable bikes are preferred if the air condition is high
         if(cityDataService.getAirCondition() > 0.8) {
             distanceToRentableBike = distanceToRentableBike / 2;
         } else if (cityDataService.getAirCondition() > 0.9){
             distanceToRentableBike = distanceToRentableBike / 3;
         }
 
+        // Public transport is preferred if the Load is low
+        if(cityDataService.getPublicTransportLoad() < 0.5) {
+            distanceToSubwayStation = distanceToSubwayStation / 2;
+            distanceToTrainStation = distanceToTrainStation / 2;
+            distanceToBusStop = distanceToBusStop / 2;
+        } else if (cityDataService.getPublicTransportLoad() < 0.35) {
+            distanceToSubwayStation = distanceToSubwayStation / 3;
+            distanceToTrainStation = distanceToTrainStation / 3;
+            distanceToBusStop= distanceToBusStop / 3;
+        }
+
         if(distanceToBusStop < distanceToCarParking
                 && distanceToBusStop < distanceToRentableBike
                 && distanceToBusStop < distanceToSubwayStation
                 && distanceToBusStop < distanceToTrainStation
-                && cityDataService.getPublicTransportLoad() < 0.8
+                && cityDataService.getPublicTransportLoad() < 0.85
                 && cityDataService.getTrafficLoad() > 0.8)
         {
             return nearestCarParking;
@@ -59,7 +71,7 @@ public class TransportLocationFinderService {
                 && distanceToSubwayStation < distanceToCarParking
                 && distanceToSubwayStation < distanceToRentableBike
                 && distanceToSubwayStation < distanceToTrainStation
-                && cityDataService.getPublicTransportLoad() < 0.8)
+                && cityDataService.getPublicTransportLoad() < 0.85)
         {
             return nearestSubwayStation;
         }
@@ -68,7 +80,7 @@ public class TransportLocationFinderService {
                 && distanceToTrainStation < distanceToCarParking
                 && distanceToTrainStation < distanceToSubwayStation
                 && distanceToTrainStation < distanceToRentableBike &&
-                cityDataService.getPublicTransportLoad() < 0.8)
+                cityDataService.getPublicTransportLoad() < 0.85)
         {
             return nearestTrainStation;
         }
