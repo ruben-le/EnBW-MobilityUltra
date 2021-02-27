@@ -23,11 +23,11 @@ public class ExecutionState {
                 sampleLocationDataGeneratorService.generateSampleBusStops(),
                 sampleLocationDataGeneratorService.generateSampleCarParking(),
                 sampleLocationDataGeneratorService.generateSampleRentableBikes(),
-                sampleLocationDataGeneratorService.generateSampleSubwayStations()
+                sampleLocationDataGeneratorService.generateSampleSubwayStations(),
+                sampleLocationDataGeneratorService.generateSampleSTrainStations()
         );
         this.transportLocationFinderService = new TransportLocationFinderService(plane, this);
     }
-
 
     public boolean isFinished() {
         return finished;
@@ -37,6 +37,9 @@ public class ExecutionState {
         this.finished = true;
     }
 
+    /**
+     * Gets the position data of the user
+     */
     public void getPositionData() {
         System.out.println("Input your x position (Max " + plane.getXMax() + "):");
         xPos = scanner.nextInt();
@@ -45,10 +48,16 @@ public class ExecutionState {
         System.out.println("Your position is: " + xPos + "/" + yPos + " (x/y), press enter to continue.");
     }
 
+    /**
+     * Prints the Users Location to console
+     */
     public void outputPos() {
         System.out.println("Your Position: " + xPos + "/" + yPos);
     }
 
+    /**
+     * Prints available transport locations to console
+     */
     public void printLocations() {
         plane.getBusStops().forEach(System.out::println);
         System.out.println();
@@ -58,8 +67,13 @@ public class ExecutionState {
         System.out.println();
         plane.getSubwayStations().forEach(System.out::println);
         System.out.println();
+        plane.getTrainStations().forEach(System.out::println);
+        System.out.println();
     }
 
+    /**
+     * Prints the nearest Transport location to console
+     */
     public void printNearestLocation() {
         TransportLocation nearestLocation = transportLocationFinderService.getNearestLocation();
         System.out.println("Nearest Transportation Point at: " + Arrays.toString(nearestLocation.getCoordinates()));

@@ -55,4 +55,16 @@ public class SampleLocationDataGeneratorService {
 
         return subwayStations;
     }
+
+    public List<TrainStation> generateSampleSTrainStations() {
+        List<TrainStation> trainStations = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            int x = r.nextInt(1000);
+            int y = r.nextInt(1000);
+            trainStations.add(new TrainStation(x, y));
+        }
+
+        return trainStations;
+    }
 }

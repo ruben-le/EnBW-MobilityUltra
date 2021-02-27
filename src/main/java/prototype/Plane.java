@@ -1,9 +1,6 @@
 package prototype;
 
-import prototype.locations.CarParking;
-import prototype.locations.BusStop;
-import prototype.locations.RentableBike;
-import prototype.locations.SubwayStation;
+import prototype.locations.*;
 
 import java.util.List;
 
@@ -15,13 +12,15 @@ public class Plane {
     private final List<CarParking> carParking;
     private final List<RentableBike> rentableBikes;
     private final List<SubwayStation> subwayStations;
+    private final List<TrainStation> trainStations;
 
     public Plane(int xMax,
                  int yMax,
                  List<BusStop> busStops,
                  List<CarParking> carParking,
                  List<RentableBike> rentableBikes,
-                 List<SubwayStation> subwayStations
+                 List<SubwayStation> subwayStations,
+                 List<TrainStation> trainStations
     ) {
         this.xMax = xMax;
         this.yMax = yMax;
@@ -29,6 +28,7 @@ public class Plane {
         this.carParking = carParking;
         this.rentableBikes = rentableBikes;
         this.subwayStations = subwayStations;
+        this.trainStations = trainStations;
     }
 
     public int getXMax() {
@@ -53,5 +53,9 @@ public class Plane {
 
     public List<SubwayStation> getSubwayStations() {
         return subwayStations;
+    }
+
+    public List<TrainStation> getTrainStations() {
+        return trainStations;
     }
 }

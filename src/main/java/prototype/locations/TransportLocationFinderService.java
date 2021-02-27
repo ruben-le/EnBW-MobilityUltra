@@ -20,25 +20,41 @@ public class TransportLocationFinderService {
         CarParking nearestCarParking = getNearestCarParking();
         RentableBike nearestRentableBike = getNearestRentableBike();
         SubwayStation nearestSubwayStation = getNearestSubwayStation();
+        TrainStation nearestTrainStation = getNearestTrainStation();
 
         double distanceToCarParking = getDistance(nearestCarParking.getxPos(), nearestCarParking.getyPos());
         double distanceToStop = getDistance(nearestBusStop.getxPos(), nearestBusStop.getyPos());
         double distanceToRentableBike = getDistance(nearestRentableBike.getxPos(), nearestRentableBike.getyPos());
         double distanceToSubwayStation = getDistance(nearestSubwayStation.getxPos(), nearestSubwayStation.getyPos());
+        double distanceToTrainStation = getDistance(nearestTrainStation.getxPos(), nearestTrainStation.getyPos());
 
-        if(distanceToCarParking < distanceToStop && distanceToCarParking < distanceToRentableBike && distanceToCarParking < distanceToSubwayStation) {
+        if(distanceToCarParking < distanceToStop && distanceToCarParking < distanceToRentableBike && distanceToCarParking < distanceToSubwayStation && distanceToCarParking < distanceToTrainStation) {
             return nearestCarParking;
         }
 
-        if(distanceToRentableBike < distanceToStop && distanceToRentableBike < distanceToSubwayStation && distanceToRentableBike < distanceToCarParking) {
+        if(distanceToRentableBike < distanceToStop && distanceToRentableBike < distanceToSubwayStation && distanceToRentableBike < distanceToCarParking && distanceToRentableBike < distanceToTrainStation) {
             return nearestRentableBike;
         }
 
-        if(distanceToSubwayStation < distanceToStop && distanceToSubwayStation < distanceToCarParking && distanceToSubwayStation < distanceToRentableBike) {
+        if(distanceToSubwayStation < distanceToStop && distanceToSubwayStation < distanceToCarParking && distanceToSubwayStation < distanceToRentableBike && distanceToSubwayStation < distanceToTrainStation) {
             return nearestSubwayStation;
         }
 
+        if(distanceToTrainStation < distanceToStop && distanceToTrainStation < distanceToCarParking && distanceToTrainStation < distanceToSubwayStation && distanceToTrainStation < distanceToRentableBike) {
+            return nearestTrainStation;
+        }
+
         return nearestBusStop;
+    }
+
+    /**
+     * Calculates the distance between the user and a given point
+     * @param xTwo x coordinate of the point
+     * @param yTwo y coordinate of the point
+     * @return distance between the user and the point
+     */
+    public double getDistance(int xTwo, int yTwo) {
+        return Math.sqrt((xPos - xTwo) * (xPos - xTwo) + (yPos - yTwo) * (yPos - yTwo));
     }
 
     private BusStop getNearestBusStop() {
@@ -103,7 +119,18 @@ public class TransportLocationFinderService {
         return nearestRentableBike;
     }
 
-    public double getDistance(int xTwo, int yTwo) {
-        return Math.sqrt((xPos - xTwo) * (xPos - xTwo) + (yPos - yTwo) * (yPos - yTwo));
+    private TrainStation getNearestTrainStation() {
+        double nearestDistance = 2000;
+        TrainStation nearestTrainStation = plane.getTrainStations().get(0);
+
+        for (TrainStation trainStation : plane.getTrainStations()) {
+            double distance = getDistance(trainStation.getxPos(), trainStation.getyPos());
+            if (distance <= nearestDistance) {
+                nearestDistance = distance;
+                nearestTrainStation = trainStation;
+            }
+        }
+
+        return nearestTrainStation;
     }
 }
