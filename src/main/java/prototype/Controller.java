@@ -19,9 +19,13 @@ public class Controller {
     }
 
     private void navigation(ExecutionState executionState) {
+        printHelp();
+        executionState.printCityData();
         while(!executionState.isFinished()) {
-            printHelp();
             String input = scanner.nextLine().toLowerCase();
+            if(input.equals("data")) {
+                executionState.printCityData();
+            }
             if(input.equals("loc")) {
                 executionState.printLocations();
             }

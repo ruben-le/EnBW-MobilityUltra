@@ -6,11 +6,13 @@ import prototype.Plane;
 public class TransportLocationFinderService {
 
     private final Plane plane;
+    private final CityDataService cityDataService;
     private final int xPos;
     private final int yPos;
 
     public TransportLocationFinderService(Plane plane, ExecutionState executionState) {
         this.plane = plane;
+        this.cityDataService = executionState.getCityDataService();
         this.xPos = executionState.getxPos();
         this.yPos = executionState.getyPos();
     }
@@ -23,28 +25,55 @@ public class TransportLocationFinderService {
         TrainStation nearestTrainStation = getNearestTrainStation();
 
         double distanceToCarParking = getDistance(nearestCarParking.getxPos(), nearestCarParking.getyPos());
-        double distanceToStop = getDistance(nearestBusStop.getxPos(), nearestBusStop.getyPos());
+        double distanceToBusStop = getDistance(nearestBusStop.getxPos(), nearestBusStop.getyPos());
         double distanceToRentableBike = getDistance(nearestRentableBike.getxPos(), nearestRentableBike.getyPos());
         double distanceToSubwayStation = getDistance(nearestSubwayStation.getxPos(), nearestSubwayStation.getyPos());
         double distanceToTrainStation = getDistance(nearestTrainStation.getxPos(), nearestTrainStation.getyPos());
 
-        if(distanceToCarParking < distanceToStop && distanceToCarParking < distanceToRentableBike && distanceToCarParking < distanceToSubwayStation && distanceToCarParking < distanceToTrainStation) {
+        if(cityDataService.getAirCondition() > 0.8) {
+            distanceToRentableBike = distanceToRentableBike / 2;
+        } else if (cityDataService.getAirCondition() > 0.9){
+            distanceToRentableBike = distanceToRentableBike / 3;
+        }
+
+        if(distanceToBusStop < distanceToCarParking
+                && distanceToBusStop < distanceToRentableBike
+                && distanceToBusStop < distanceToSubwayStation
+                && distanceToBusStop < distanceToTrainStation
+                && cityDataService.getPublicTransportLoad() < 0.8
+                && cityDataService.getTrafficLoad() > 0.8)
+        {
             return nearestCarParking;
         }
 
-        if(distanceToRentableBike < distanceToStop && distanceToRentableBike < distanceToSubwayStation && distanceToRentableBike < distanceToCarParking && distanceToRentableBike < distanceToTrainStation) {
+        if(distanceToRentableBike < distanceToBusStop
+                && distanceToRentableBike < distanceToSubwayStation
+                && distanceToRentableBike < distanceToCarParking
+                && distanceToRentableBike < distanceToTrainStation
+                && cityDataService.getAirCondition() > 0.5)
+        {
             return nearestRentableBike;
         }
 
-        if(distanceToSubwayStation < distanceToStop && distanceToSubwayStation < distanceToCarParking && distanceToSubwayStation < distanceToRentableBike && distanceToSubwayStation < distanceToTrainStation) {
+        if(distanceToSubwayStation < distanceToBusStop
+                && distanceToSubwayStation < distanceToCarParking
+                && distanceToSubwayStation < distanceToRentableBike
+                && distanceToSubwayStation < distanceToTrainStation
+                && cityDataService.getPublicTransportLoad() < 0.8)
+        {
             return nearestSubwayStation;
         }
 
-        if(distanceToTrainStation < distanceToStop && distanceToTrainStation < distanceToCarParking && distanceToTrainStation < distanceToSubwayStation && distanceToTrainStation < distanceToRentableBike) {
+        if(distanceToTrainStation < distanceToBusStop
+                && distanceToTrainStation < distanceToCarParking
+                && distanceToTrainStation < distanceToSubwayStation
+                && distanceToTrainStation < distanceToRentableBike &&
+                cityDataService.getPublicTransportLoad() < 0.8)
+        {
             return nearestTrainStation;
         }
 
-        return nearestBusStop;
+        return nearestCarParking;
     }
 
     /**
