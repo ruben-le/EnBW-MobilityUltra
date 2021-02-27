@@ -1,13 +1,11 @@
 package prototype;
 
+import prototype.locations.Location;
 import prototype.locations.NearestLocationFinder;
 import prototype.locations.Parking;
 import prototype.locations.Stop;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class ExecutionState {
 
@@ -69,7 +67,9 @@ public class ExecutionState {
     }
 
     public void printNearestLocation() {
-        System.out.println(nearestLocationFinder.getNearestLocation());
+        Location nearestLocation = nearestLocationFinder.getNearestLocation();
+        System.out.println("Nearest Transportation Point at: " + Arrays.toString(nearestLocation.getCoordinates()));
+        System.out.println("Type: " + nearestLocation.getType());
     }
 
     public int getxPos() {

@@ -25,6 +25,10 @@ public class Location {
         return coordinates[1];
     }
 
+    public String getType() {
+        return locationType;
+    }
+
     @Override
     public String toString() {
         return "Location{" +

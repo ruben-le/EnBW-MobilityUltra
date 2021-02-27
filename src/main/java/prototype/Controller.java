@@ -22,10 +22,10 @@ public class Controller {
         while(!executionState.isFinished()) {
             printHelp();
             String input = scanner.nextLine().toLowerCase();
-            if(input.equals("printlocations")) {
+            if(input.equals("loc")) {
                 executionState.printLocations();
             }
-            if(input.equals("inputpos")) {
+            if(input.equals("ipos")) {
                 executionState.getPositionData();
             }
             if(input.equals("pos")) {
@@ -34,6 +34,9 @@ public class Controller {
             if(input.equals("go")) {
                 executionState.printNearestLocation();
             }
+            if(input.equals("help")) {
+                printHelp();
+            }
             if(input.equals("quit")) {
                 executionState.setFinished();
             }
@@ -41,10 +44,12 @@ public class Controller {
     }
 
     private void printHelp() {
-        System.out.println("Commands overview:" + System.lineSeparator());
-        System.out.println("printLocations: prints locations available");
-        System.out.println("inputPos: set your Position");
+        System.out.println("Overview" + System.lineSeparator());
+        System.out.println("loc: prints locations available");
+        System.out.println("iPos: input and set your Position");
         System.out.println("pos: view your current Position");
+        System.out.println("go: get location of the nearest transportation point");
+        System.out.println("help: print this dialog");
         System.out.println("quit: quit" + System.lineSeparator());
     }
 }

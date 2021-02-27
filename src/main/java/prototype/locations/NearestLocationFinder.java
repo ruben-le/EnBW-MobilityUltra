@@ -5,8 +5,8 @@ import prototype.Plane;
 
 public class NearestLocationFinder {
 
-    private Plane plane;
-    private ExecutionState executionState;
+    private final Plane plane;
+    private final ExecutionState executionState;
 
     public NearestLocationFinder(Plane plane, ExecutionState executionState) {
         this.plane = plane;
@@ -44,7 +44,7 @@ public class NearestLocationFinder {
         return distanceToParking < distanceToStop ? nearestParking : nearestStop;
     }
 
-    public int getDistance(int xOne, int yOne, int xTwo, int yTwo) {
-        return (xOne - xTwo) * (xOne - xTwo) + (yOne - yTwo) * (yOne - yTwo);
+    public double getDistance(int xOne, int yOne, int xTwo, int yTwo) {
+        return Math.sqrt((xOne - xTwo) * (xOne - xTwo) + (yOne - yTwo) * (yOne - yTwo));
     }
 }
