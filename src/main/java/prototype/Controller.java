@@ -31,6 +31,9 @@ public class Controller {
             if(input.equals("pos")) {
                 executionState.outputPos();
             }
+            if(input.equals("go")) {
+                executionState.printNearestLocation();
+            }
             if(input.equals("quit")) {
                 executionState.setFinished();
             }

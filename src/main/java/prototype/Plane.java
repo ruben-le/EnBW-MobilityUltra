@@ -26,4 +26,12 @@ public class Plane {
     public int getYMax() {
         return yMax;
     }
+
+    public List<Stop> getStops() {
+        return stops;
+    }
+
+    public List<Parking> getParking() {
+        return parking;
+    }
 }

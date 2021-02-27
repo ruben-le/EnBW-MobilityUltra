@@ -17,6 +17,14 @@ public class Location {
         return coordinates;
     }
 
+    public int getxPos() {
+        return coordinates[0];
+    }
+
+    public int getyPos() {
+        return coordinates[1];
+    }
+
     @Override
     public String toString() {
         return "Location{" +

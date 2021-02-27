@@ -1,5 +1,6 @@
 package prototype;
 
+import prototype.locations.NearestLocationFinder;
 import prototype.locations.Parking;
 import prototype.locations.Stop;
 
@@ -18,11 +19,13 @@ public class ExecutionState {
     private final List<Parking> parking = new ArrayList<>();
     private final Random r = new Random();
     private final Scanner scanner = new Scanner(System.in);
+    private final NearestLocationFinder nearestLocationFinder;
 
     public ExecutionState(boolean finished) {
         this.finished = finished;
         generateSampleLocationData();
         this.plane = new Plane(1000, 1000, stops, parking);
+        this.nearestLocationFinder = new NearestLocationFinder(plane, this);
     }
 
 
@@ -63,5 +66,17 @@ public class ExecutionState {
             int y = r.nextInt(1000);
             parking.add(new Parking(x, y));
         }
+    }
+
+    public void printNearestLocation() {
+        System.out.println(nearestLocationFinder.getNearestLocation());
+    }
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
     }
 }
