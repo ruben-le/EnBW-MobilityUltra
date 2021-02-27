@@ -52,7 +52,7 @@ public class ExecutionState {
         xPos = scanner.nextInt();
         System.out.println("Geben sie die y-koordinate Ihrer Position ein: (Max " + plane.getYMax() + "):");
         yPos = scanner.nextInt();
-        System.out.println("Your position is: " + xPos + "/" + yPos + " (x/y), press enter to continue.");
+        outputPos();
         this.transportLocationFinderService = new TransportLocationFinderService(this.plane, this);
     }
 
@@ -60,7 +60,7 @@ public class ExecutionState {
      * Prints the Users Location to console
      */
     public void outputPos() {
-        System.out.println("Your Position: " + xPos + "/" + yPos);
+        System.out.println("Deine Position: " + xPos + "/" + yPos);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ExecutionState {
     public void printNearestLocation() {
         TransportLocation nearestLocation = transportLocationFinderService.getNearestLocation();
         double distance = transportLocationFinderService.getDistance(nearestLocation.getxPos(), nearestLocation.getyPos());
-        System.out.println("Nächstgelegene Transportmöglichkeit: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + distance + " away from you.");
+        System.out.println("Nächstgelegene Transportmöglichkeit: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + distance + " von dir entfernt.");
         System.out.println("Typ: " + nearestLocation.getType());
         System.out.println("Umweltbelastung: " + transportEnvironmentService.getEnvironmentalStatus(nearestLocation));
         System.out.println("Geschwindigkeit: " + transportSpeedService.getTransportationSpeed(nearestLocation));
