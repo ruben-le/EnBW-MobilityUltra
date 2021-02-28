@@ -26,7 +26,7 @@ https://github.com/MS0109/EnBW-MobilityUltra.git
 
 ## Team-Mitglieder
 **TEAM: E13**
-- Antin Walter
+- Anton Walter
 - Luis Jag
 - Mike Schellhas
 - Ruben Leibmann
