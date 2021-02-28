@@ -1,4 +1,4 @@
-package prototype.locations;
+package prototype.services;
 
 import java.util.Random;
 

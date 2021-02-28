@@ -1,4 +1,6 @@
-package prototype.locations;
+package prototype.services;
+
+import prototype.locations.TransportLocation;
 
 public class TransportSpeedService {
 

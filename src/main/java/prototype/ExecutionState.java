@@ -1,6 +1,7 @@
 package prototype;
 
 import prototype.locations.*;
+import prototype.services.*;
 
 import java.util.*;
 
