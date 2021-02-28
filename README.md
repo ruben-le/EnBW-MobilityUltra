@@ -25,7 +25,7 @@ Direkt-Link zu GitHub:
 https://github.com/MS0109/EnBW-MobilityUltra.git 
 
 ## Team-Mitglieder
-**TEAM: E13**
+**Get-Smarter**
 - Anton Walter
 - Luis Jag
 - Mike Schellhas
