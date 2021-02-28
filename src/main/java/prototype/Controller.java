@@ -41,19 +41,19 @@ public class Controller {
             if(input.equals("help")) {
                 printHelp();
             }
-            if(input.equals("quit")) {
+            if(input.equals("exit")) {
                 executionState.setFinished();
             }
         }
     }
 
     private void printHelp() {
-        System.out.println("Overview" + System.lineSeparator());
-        System.out.println("loc: prints locations available");
-        System.out.println("iPos: input and set your Position");
-        System.out.println("pos: view your current Position");
-        System.out.println("go: get location of the nearest transportation point");
-        System.out.println("help: print this dialog");
-        System.out.println("quit: quit" + System.lineSeparator());
+        System.out.println("Übersicht" + System.lineSeparator());
+        System.out.println("loc: Ausgabe aller verfügbaren Transportmöglichkeiten");
+        System.out.println("iPos: Eingabe der eigenen Position");
+        System.out.println("pos: Anzeige der aktuellen Position");
+        System.out.println("go: Finde die beste Transportmöglichkeit in der Nähe");
+        System.out.println("help: Zeigt diesen Dialog an");
+        System.out.println("exit: Beenden" + System.lineSeparator());
     }
 }

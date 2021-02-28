@@ -97,7 +97,7 @@ public class ExecutionState {
     public void printNearestLocation() {
         TransportLocation nearestLocation = transportLocationFinderService.getNearestLocation();
         double distance = transportLocationFinderService.getDistance(nearestLocation.getxPos(), nearestLocation.getyPos());
-        System.out.println("Nächstgelegene Transportmöglichkeit: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + distance + " von dir entfernt.");
+        System.out.println("Nächstgelegene Transportmöglichkeit: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + (int) distance + "m von dir entfernt.");
         System.out.println("Typ: " + nearestLocation.getType());
         System.out.println("Umweltbelastung: " + transportEnvironmentService.getEnvironmentalStatus(nearestLocation));
         System.out.println("Geschwindigkeit: " + transportSpeedService.getTransportationSpeed(nearestLocation));
