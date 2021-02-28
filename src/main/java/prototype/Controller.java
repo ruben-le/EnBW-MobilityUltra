@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Controller {
 
-    private ExecutionState executionState;
-    private Scanner scanner;
+    private final ExecutionState executionState;
+    private final Scanner scanner;
 
     public Controller() {
         this.executionState = new ExecutionState(false);
@@ -37,6 +37,7 @@ public class Controller {
             }
             if(input.equals("go")) {
                 executionState.printNearestLocation();
+                executionState.printOtherLocations();
             }
             if(input.equals("help")) {
                 printHelp();

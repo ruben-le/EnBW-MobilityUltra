@@ -12,18 +12,18 @@ public class TransportSpeedService {
 
         if(transportLocation.getType().equals("Mietfahrrad") || transportLocation.getType().equals("Bushaltestelle")) {
             if (cityDataService.getTrafficLoad() > 0.7) {
-                return "Sehr langsam";
+                return "Sehr langsam (----)";
             }
-            return "Langsam";
+            return "Langsam (--)";
         }
 
         if(transportLocation.getType().equals("U-Bahn Station") || transportLocation.getType().equals("S-Bahn Station")) {
-            return "Schnell";
+            return "Schnell (++++)";
         }
 
         if(cityDataService.getTrafficLoad() > 0.8) {
-            return "Langsam";
+            return "Langsam (--)";
         }
-        return "Normal";
+        return "Normal (/)";
     }
 }

@@ -87,21 +87,35 @@ public class ExecutionState {
     public void printCityData() {
         System.out.println("Aktuelle Luftqualität: " + (int)(cityDataService.getAirCondition() * 100) + "%");
         System.out.println("Aktuelle Auslastung öffentlicher Verkehrsmittel: " + (int) (cityDataService.getPublicTransportLoad() * 100) + "%");
-        System.out.println("Aktuelle Verkehrsauslastung: " + (int) (cityDataService.getTrafficLoad() * 100) + "%");
-        System.out.println();
+        System.out.println("Aktuelle Verkehrsauslastung: " + (int) (cityDataService.getTrafficLoad() * 100) + "%" + System.lineSeparator());
     }
 
     /**
      * Prints the nearest Transport location to console
      */
     public void printNearestLocation() {
-        TransportLocation nearestLocation = transportLocationFinderService.getNearestLocation();
+        TransportLocation nearestLocation = transportLocationFinderService.getBestTransportLocation();
         double distance = transportLocationFinderService.getDistance(nearestLocation.getxPos(), nearestLocation.getyPos());
-        System.out.println("Nächstgelegene Transportmöglichkeit: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + (int) distance + "m von dir entfernt.");
+        System.out.println("Nächstgelegene Transportmöglichkeit bei: " + Arrays.toString(nearestLocation.getCoordinates()) + ", " + (int) distance + "m von dir entfernt.");
         System.out.println("Typ: " + nearestLocation.getType());
         System.out.println("Umweltbelastung: " + transportEnvironmentService.getEnvironmentalStatus(nearestLocation));
-        System.out.println("Geschwindigkeit: " + transportSpeedService.getTransportationSpeed(nearestLocation));
-        System.out.println();
+        System.out.println("Geschwindigkeit: " + transportSpeedService.getTransportationSpeed(nearestLocation) + System.lineSeparator());
+    }
+
+    /**
+     * Prints other possible Transport locations
+     */
+    public void printOtherLocations() {
+        List<TransportLocation> otherLocations = transportLocationFinderService.getBestTransportLocations();
+        otherLocations.remove(transportLocationFinderService.getBestTransportLocation());
+
+        System.out.println("Andere Transportmöglichkeiten:");
+        otherLocations.forEach(location -> {
+            System.out.print("Typ: " + location.getType() + ", ");
+            System.out.print("Umweltbelastung: " + transportEnvironmentService.getEnvironmentalStatus(location) + ", ");
+            System.out.println("Geschwindigkeit: " + transportSpeedService.getTransportationSpeed(location) + ", ");
+            System.out.println((int) transportLocationFinderService.getDistance(location.getxPos(), location.getyPos()) + "m von dir entfernt" + System.lineSeparator());
+        });
     }
 
     public int getxPos() {

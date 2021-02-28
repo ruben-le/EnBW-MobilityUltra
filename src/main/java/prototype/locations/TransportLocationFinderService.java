@@ -3,6 +3,9 @@ package prototype.locations;
 import prototype.ExecutionState;
 import prototype.Plane;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TransportLocationFinderService {
 
     private final Plane plane;
@@ -17,7 +20,7 @@ public class TransportLocationFinderService {
         this.yPos = executionState.getyPos();
     }
 
-    public TransportLocation getNearestLocation() {
+    public TransportLocation getBestTransportLocation() {
         BusStop nearestBusStop = getNearestBusStop();
         CarParking nearestCarParking = getNearestCarParking();
         RentableBike nearestRentableBike = getNearestRentableBike();
@@ -52,7 +55,7 @@ public class TransportLocationFinderService {
                 && distanceToBusStop < distanceToRentableBike
                 && distanceToBusStop < distanceToSubwayStation
                 && distanceToBusStop < distanceToTrainStation
-                && cityDataService.getPublicTransportLoad() < 0.85
+                && cityDataService.getPublicTransportLoad() < 0.9
                 && cityDataService.getTrafficLoad() < 0.8)
         {
             return nearestCarParking;
@@ -86,6 +89,18 @@ public class TransportLocationFinderService {
         }
 
         return nearestCarParking;
+    }
+
+    public List<TransportLocation> getBestTransportLocations() {
+        List<TransportLocation> otherLocations = new ArrayList<>();
+
+        otherLocations.add(getNearestBusStop());
+        otherLocations.add(getNearestRentableBike());
+        otherLocations.add(getNearestCarParking());
+        otherLocations.add(getNearestSubwayStation());
+        otherLocations.add(getNearestTrainStation());
+
+        return otherLocations;
     }
 
     /**
